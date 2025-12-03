@@ -1,0 +1,18 @@
+---
+title: "Conclusion"
+author: "Chrinovic Mukulu"
+date: "2025-12-03"
+output:
+  word_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+
+## Conlcusion
+This analysis of the 2024 NOAA Storm Events data highlights the significant variability in weather-related hazards across the United States. Public health impacts are driven primarily by high-intensity events—such as tornadoes, excessive heat, and major flooding—that result in disproportionately high injuries and fatalities. The frequency analysis revealed that each state experiences a unique hazard profile, influenced by geography, climate, and regional weather systems. Seasonal analysis further showed predictable cycles, with winter storms dominating the colder months and severe convective events peaking in late spring and summer. Additional evaluations of fatality rates, economic damage, and state-level fatal events highlighted both the deadliest and most financially destructive hazards. Together, these findings offer a comprehensive view of the risks associated with severe weather and reinforce the need for targeted preparedness and mitigation strategies. The results also demonstrate the value of systematic data processing and reproducible R-based workflows for supporting emergency management and policy planning.  

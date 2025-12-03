@@ -1,0 +1,39 @@
+---
+title: "Questions"
+author: "Chrinovic Mukulu"
+date: "2025-12-03"
+output:
+  word_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Question 1: Across the United States, which types of events are most harmful with respect to population health?
+
+The analysis shows that certain severe weather events have a disproportionately large impact on population health. Event types such as Tornadoes, Excessive Heat, Floods, and Lightning usually rank among the most harmful, driven by high numbers of injuries and fatalities. These events tend to produce sudden or intense conditions that increase the likelihood of direct human exposure. The results highlight which event categories require the greatest public safety attention and resource preparedness at the national level.
+
+## Question 2: Across the United States, which types of events most happening in which States?
+
+Across the United States, different states experience certain weather events far more frequently than others. By summarizing event counts, we see that states in the Great Plains and Midwest commonly experience Thunderstorm Wind, Hail, and Tornado events, while coastal states show more Flood, High Surf, or Hurricane-related events. The per-state summary reveals a dominant event type for each state, showing clear regional weather patterns. This information helps agencies understand the hazards each state faces most often, supporting resource and preparedness planning at the state level.
+
+
+## Question 3: Which types of events are caracterised by which months
+
+The monthly analysis reveals clear seasonal patterns in weather events across the United States. Winter months (December–February) are dominated by events such as Winter Weather, Winter Storm, and Ice Storm. Spring and early summer show a sharp rise in Thunderstorm Wind, Hail, and Tornado events, consistent with the severe convective storm season. Late summer and fall see increased Flood events and, in some regions, Tropical Storm or Hurricane-related events. These predictable seasonal cycles reflect well-established meteorological patterns and highlight when different types of hazards are most likely to occur.
+
+
+## Question 4A: Which event types have the highest fatality rate per event?
+
+Weather events with the highest fatality rate per occurrence tend to be rare but extremely dangerous. Events such as Avalanche, Rip Current, and Extreme Cold/Wind Chill often show higher fatality rates per event because they occur under conditions where individuals are more exposed and have less protection. This analysis highlights the event types most deadly on a per-incident basis, even if they are not the most frequent.
+
+## Question 4B: Which event types cause the most prperty damages?
+
+Property damage analysis shows that certain event types cause disproportionately large economic losses. Events such as Flood, Hurricane, Storm Surge/Tide, and Tornado typically rank among the highest-damage categories, often reaching millions or billions of dollars in total losses. These events tend to affect large geographic areas, destroy infrastructure, or remain active for long durations. Identifying the event types with the greatest financial impact supports strategic planning, resource allocation, and disaster mitigation efforts.
+
+## Question 4C: Which states experience the highest number of fatal weather events?
+
+Several states experience significantly higher numbers of fatal weather events than others. States with large populations, diverse climates, or high exposure to severe hazards—such as Texas, Florida, and California—typically record the highest total deaths. These states face a wider variety of dangerous events, including heat waves, floods, hurricanes, and tornadoes. Understanding this concentration of fatal events helps federal and state agencies prioritize preparedness, training, and resource distribution.

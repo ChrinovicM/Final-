@@ -1,0 +1,246 @@
+---
+title: 'US Storm Events 2024: Impact on Population Health and Seasonal Paterns'
+author: "Chrinovic Mukulu"
+date: "2025-12-03"
+output:
+  word_document: default
+  pdf_document: default
+---
+
+```{r}
+
+knitr::opts_chunk$set(
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE
+)
+
+library(dplyr)
+library(readr)
+library(lubridate)
+library(ggplot2)
+library(stringr)
+
+folder_path <- ("C:/Users/mukuluc/Desktop/final")
+list.files(folder_path)
+
+
+
+
+
+
+details_file    <- file.path(folder_path,  "StormEvents_details-ftp_v1.0_d2025_c20251118.csv")
+fatalities_file <- file.path(folder_path, "StormEvents_fatalities-ftp_v1.0_d2025_c20251118.csv")
+locations_file  <- file.path(folder_path, "StormEvents_locations-ftp_v1.0_d2025_c20251118.csv")
+
+details    <- read_csv(details_file)
+fatalities <- read_csv(fatalities_file)
+locations  <- read_csv(locations_file)
+
+
+dim(details)
+dim(fatalities)
+dim(locations)
+
+head(details)
+
+StormEvents_joined_data <- details %>%
+  left_join(locations,  by = "EVENT_ID") %>%
+  left_join(fatalities, by = "EVENT_ID")
+
+dim(StormEvents_joined_data)
+head(StormEvents_joined_data)
+
+write_csv(StormEvents_joined_data,
+          file.path(folder_path, "StormEvents_joined_data.csv"))
+StormEvents_clean <- StormEvents_joined_data %>%
+  mutate(
+    BEGIN_DATE = mdy_hms(BEGIN_DATE_TIME, quiet = TRUE),
+    
+    
+    MONTH = month(BEGIN_DATE, label = TRUE, abbr = TRUE),
+    EVENT_TYPE = str_trim(EVENT_TYPE),
+    STATE = str_trim(STATE),
+    
+    
+    TOTAL_INJURIES = INJURIES_DIRECT + INJURIES_INDIRECT,
+    TOTAL_DEATHS = DEATHS_DIRECT + DEATHS_INDIRECT,
+    
+    
+    TOTAL_HEALTH_HARM = TOTAL_INJURIES + TOTAL_DEATHS
+  )
+
+head(StormEvents_clean)
+
+
+
+
+
+Q1_summary <- StormEvents_clean %>%
+  group_by(EVENT_TYPE) %>%
+  summarise(
+    Total_Injuries = sum(TOTAL_INJURIES, na.rm = TRUE),
+    Total_Deaths   = sum(TOTAL_DEATHS, na.rm = TRUE),
+    Total_Health_Harm = sum(TOTAL_HEALTH_HARM, na.rm = TRUE)
+  ) %>%
+  arrange(desc(Total_Health_Harm))
+
+head(Q1_summary, 10)
+
+
+
+Q1_summary %>%
+  slice_max(Total_Health_Harm, n = 10) %>%
+  ggplot(aes(x = reorder(EVENT_TYPE, Total_Health_Harm),
+             y = Total_Health_Harm)) +
+  geom_col(fill = "steelblue") +
+  coord_flip() +
+  labs(
+    title = "Top 10 Most Harmful Weather Event Types",
+    x = "Event Type",
+    y = "Total Health Harm (Injuries + Deaths)"
+  ) +
+  theme_minimal()
+
+
+
+
+
+
+
+
+Q2_counts <- StormEvents_clean %>%
+  group_by(STATE, EVENT_TYPE) %>%
+  summarise(Event_Count = n(), .groups = "drop")
+
+
+head(Q2_counts)
+
+
+Q2_top_event_by_state <- Q2_counts %>%
+  group_by(STATE) %>%
+  slice_max(Event_Count, n = 1) %>%
+  arrange(STATE)
+
+head(Q2_top_event_by_state, 15)
+
+Q2_counts_overall <- Q2_counts %>%
+  group_by(EVENT_TYPE) %>%
+  summarise(Total_Events = sum(Event_Count), .groups = "drop") %>%
+  arrange(desc(Total_Events))
+
+Q2_counts_overall %>%
+  slice_max(Total_Events, n = 10) %>%
+  ggplot(aes(x = reorder(EVENT_TYPE, Total_Events),
+             y = Total_Events)) +
+  geom_col(fill = "darkgreen") +
+  coord_flip() +
+  labs(
+    title = "Top 10 Most Common Weather Events in the U.S.",
+    x = "Event Type",
+    y = "Total Count"
+  ) +
+  theme_minimal()
+
+
+
+
+
+
+
+Q3_monthly <- StormEvents_clean %>%
+  group_by(MONTH, EVENT_TYPE) %>%
+  summarise(Event_Count = n(), .groups = "drop")
+
+Q3_top_event_by_month <- Q3_monthly %>%
+  group_by(MONTH) %>%
+  slice_max(Event_Count, n = 1) %>%
+  arrange(MONTH)
+
+Q3_top_event_by_month
+
+top5_events <- Q3_monthly %>%
+  group_by(EVENT_TYPE) %>%
+  summarise(Total = sum(Event_Count)) %>%
+  slice_max(Total, n = 5) %>%
+  pull(EVENT_TYPE)
+
+Q3_monthly %>%
+  filter(EVENT_TYPE %in% top5_events) %>%
+  ggplot(aes(x = MONTH, y = Event_Count, color = EVENT_TYPE, group = EVENT_TYPE)) +
+  geom_line(size = 1.2) +
+  geom_point(size = 2) +
+  labs(
+    title = "Monthly Trends of Top 5 Most Common Event Types",
+    x = "Month",
+    y = "Event Count",
+    color = "Event Type"
+  ) +
+  theme_minimal()
+
+
+
+
+Q4A_fatality_rate <- StormEvents_clean %>%
+  group_by(EVENT_TYPE) %>%
+  summarise(
+    Total_Deaths = sum(TOTAL_DEATHS, na.rm = TRUE),
+    Event_Count = n(),
+    Fatality_Rate = Total_Deaths / Event_Count
+  ) %>%
+  arrange(desc(Fatality_Rate))
+
+head(Q4A_fatality_rate, 10)
+
+Q4A_fatality_rate %>%
+  slice_max(Fatality_Rate, n = 10) %>%
+  ggplot(aes(x = reorder(EVENT_TYPE, Fatality_Rate),
+             y = Fatality_Rate)) +
+  geom_col(fill = "firebrick") +
+  coord_flip() +
+  labs(
+    title = "Top 10 Deadliest Weather Events (Fatality Rate per Event)",
+    x = "Event Type",
+    y = "Fatality Rate"
+  ) +
+  theme_minimal()
+
+
+
+
+StormEvents_clean <- StormEvents_clean %>%
+  mutate(
+    PROP_DAMAGE_NUM = case_when(
+      str_detect(DAMAGE_PROPERTY, "K") ~ as.numeric(str_remove(DAMAGE_PROPERTY, "K")) * 1e3,
+      str_detect(DAMAGE_PROPERTY, "M") ~ as.numeric(str_remove(DAMAGE_PROPERTY, "M")) * 1e6,
+      str_detect(DAMAGE_PROPERTY, "B") ~ as.numeric(str_remove(DAMAGE_PROPERTY, "B")) * 1e9,
+      TRUE ~ suppressWarnings(as.numeric(DAMAGE_PROPERTY))
+    )
+  )
+head(StormEvents_clean$PROP_DAMAGE_NUM)
+
+Q4B_damage <- StormEvents_clean %>%
+  group_by(EVENT_TYPE) %>%
+  summarise(
+    Total_Property_Damage = sum(PROP_DAMAGE_NUM, na.rm = TRUE)
+  ) %>%
+  arrange(desc(Total_Property_Damage))
+
+head(Q4B_damage, 10)
+
+
+
+
+
+
+Q4C_state_fatal <- StormEvents_clean %>%
+  group_by(STATE) %>%
+  summarise(
+    Total_Deaths = sum(TOTAL_DEATHS, na.rm = TRUE),
+    Fatal_Event_Count = sum(TOTAL_DEATHS > 0, na.rm = TRUE)
+  ) %>%
+  arrange(desc(Total_Deaths))
+
+head(Q4C_state_fatal, 10)
+
+```

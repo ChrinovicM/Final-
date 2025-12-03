@@ -1,0 +1,153 @@
+---
+title: "README"
+author: "Chrinovic Mukulu"
+date: "2025-12-03"
+output:
+  word_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## README
+
+https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/ (Source)
+https://www.7-zip.org/ (Conversion data)
+StormEvents_details-ftp_v1.0_d2025_c20251118.csv (Download)
+StormEvents_fatalities-ftp_v1.0_d2025_c20251118.csv (Download)
+StormEvents_locations-ftp_v1.0_d2025_c20251118.csv (Download)
+
+
+README.md
+
+NOAA Storm Events Analysis (2024) – Comprehensive Data Analytics Project
+This repository contains the full workflow, code, documentation, and output for a detailed analysis of the NOAA 2024 Storm Events dataset. The project was completed as part of an academic final assignment, but it is intentionally designed to function as a professional data analytics portfolio piece. It demonstrates real-world data processing, exploratory analysis, visualization, and reproducible reporting techniques using R.
+
+1. Project Purpose
+
+The purpose of this project is to analyze severe weather hazards across the United States and answer key questions relevant to emergency preparedness, public health risk assessment, disaster response planning, and seasonal hazard trends. Using the cleaned and merged NOAA dataset, the analysis addresses the following:
+
+1. Which weather event types cause the greatest harm to population health (injuries and fatalities).
+
+2. Which weather event types occur most frequently in each U.S. state.
+
+3. How event frequency varies by month, revealing seasonal patterns.
+
+
+Additional advanced analyses, including:
+
+Fatality rate per event type
+
+Property damage by event type
+
+States with the highest number of fatal weather events
+
+All results are fully reproducible and implemented with tidyverse-based R workflows.
+
+2. Dataset Description
+The dataset originates from the National Oceanic and Atmospheric Administration (NOAA) and is composed of three related files:
+
+StormEvents_details
+
+StormEvents_locations
+
+StormEvents_fatalities
+
+Each file contains complementary information linked by the shared primary key EVENT_ID.
+
+Key Variables Included
+(Descriptions based on NOAA’s official documentation)
+
+EVENT_TYPE: Category of weather event
+
+STATE: U.S. state where the event occurred
+
+BEGIN_DATE_TIME: Start date and time
+
+INJURIES_DIRECT / INDIRECT
+
+DEATHS_DIRECT / INDIRECT
+
+DAMAGE_PROPERTY: Property damage with unit identifiers (e.g., “K”, “M”, “B”)
+
+LAT / LON: Geographic coordinates
+
+LOCATION_NAME: City, county, or zone information
+
+A reference copy of the NOAA Storm Data format is included in this repository.
+
+3. Technical Workflow
+Step 1 – Loading and Merging Data
+The three raw CSV files were imported and merged using EVENT_ID. The resulting dataset, StormEvents_joined_data.csv, served as the master dataset for all analyses.
+
+Step 2 – Data Cleaning
+Cleaning steps included:
+
+Converting date/time fields using the lubridate package
+
+Creating new analytical variables:
+
+TOTAL_INJURIES
+
+TOTAL_DEATHS
+
+TOTAL_HEALTH_HARM
+
+MONTH
+
+Converting property damage values (e.g., “10K”, “3.5M”) into numeric dollar amounts
+
+Normalizing state and event type text fields
+
+Handling missing or malformed data gracefully
+
+
+Step 3 – Exploratory and Statistical Analysis
+Q1. Population Health Impact:
+Identified event types with the highest injuries and fatalities. Tornadoes, excessive heat, and flooding consistently demonstrated the greatest total health impact.
+
+Q2. Most Common Event Types by State:
+Determined which weather events occur most frequently within each state. Thunderstorm Wind and Hail events dominate across many central and southern states.
+
+Q3. Monthly and Seasonal Trends:
+Analyzed how event frequency varies by month. Winter months were dominated by winter storms and ice-related hazards, while spring and summer showed sharp increases in thunderstorm, hail, and tornado activity.
+
+Q4A. Fatality Rate per Event:
+Measured how deadly each event type is relative to its frequency. Rare but severe hazards such as rip currents and avalanches showed elevated fatality rates.
+
+Q4B. Property Damage Analysis:
+Identified the event types responsible for the greatest economic losses, including Flood, Tornado, Storm Surge/Tide, and Hurricane-related events.
+
+Q4C. States With the Most Fatal Events:
+Ranked states based on total deaths and the number of events that resulted in at least one fatality. States such as Texas, Florida, and California tended to have the highest burdens.
+
+
+
+Step 4 – Visualization
+All visualizations were produced using ggplot2.
+A maximum of five figures were included to comply with assignment guidelines.
+
+4. Repository Contents
+File Name	Description
+Final_Project_StormEvents.Rmd	Full reproducible R Markdown analysis
+Final_Project_StormEvents.R	Cleaned R script containing analysis code
+StormEvents_joined_data.csv	Merged dataset created from raw NOAA data
+StormEvents_details-*.csv	Raw NOAA event details file
+StormEvents_locations-*.csv	Raw NOAA event locations file
+StormEvents_fatalities-*.csv	Raw NOAA fatality records file
+README.md	Project documentation and overview
+5. How to Reproduce the Analysis
+Requirements
+R (version 4.0 or higher)
+
+RStudio
+
+Required R packages:
+
+install.packages(c("dplyr", "readr", "lubridate", "ggplot2", "stringr", "knitr"))
+
+
+
+

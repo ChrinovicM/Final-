@@ -1,0 +1,25 @@
+---
+title: "Captions"
+author: "Chrinovic Mukulu"
+date: "2025-12-03"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Figure captions
+Figure 1 — Most Harmful Weather Events (Population Health)
+This figure displays the top 10 weather event types ranked by total injuries and fatalities. Tornadoes, excessive heat, and flooding show the greatest population health burden.
+
+Figure 2 — Most Common Weather Events in the U.S.
+This chart highlights the most frequently occurring weather event types across the country, showing that thunderstorm wind and hail events are among the most common.
+
+Figure 3 — Monthly Trends of Top Weather Events
+This line plot shows how the five most frequent event types vary across months. Severe convective events peak during late spring and summer, while winter storms increase during colder months.
+
+Figure 4 — Deadliest Events by Fatality Rate
+This figure presents the event types with the highest fatalities per event. Rare but severe hazards—such as avalanches and rip currents—show the highest fatality rates.
+
+
